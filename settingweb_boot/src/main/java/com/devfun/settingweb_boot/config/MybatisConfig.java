@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @MapperScan(basePackages = "com.devfun.settingweb_boot.dao")
 public class MybatisConfig {
+	
 	@Bean
     public SqlSessionFactory sqlSessionFactory (DataSource dataSource) throws Exception {
         SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();

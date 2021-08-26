@@ -2,13 +2,96 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-    
-<mapper namespace="com.devfun.settingweb_boot.dao.StatisticMapper">
- 
-    <select id="selectYearLogin" parameterType="string" resultType="hashMap">
-        select count(*) as totCnt
-        from statistc.requestinfo ri
-        where left(ri.createDate, 2) = #{year};
-    </select>
-    
+
+<mapper
+	namespace="com.devfun.settingweb_boot.dao.StatisticMapper">
+
+<select
+		id="selectYearLogin"
+		parameterType="string"
+		resultType="hashMap">
+		select count(*) as totCnt ,ri.requestCode
+		from statistc.requestinfo ri
+		where left(ri.createDate, 2) = #{year} and ri.requestCode ='L' ;
+	</select>
+
+	<select
+		id="selectMonthLogin"
+		parameterType="string"
+		resultType="hashMap">
+		select count(*) as totCnt ,ri.requestCode
+		from statistc.requestinfo ri
+		where left(ri.createDate, 4) = #{yearMonth} and ri.requestCode ='L';
+	</select>
+
+	<select
+		id="selectDateLogin"
+		parameterType="string"
+		resultType="hashMap">
+		select count(*) as totCnt ,ri.requestCode
+		from statistc.requestinfo ri
+		where left (ri.createDate, 6) = #{date} and ri.requestCode ='L';
+	</select>
+
+
+	<!-- 하루 평균 로그인 횟수 조회 -->
+ 	<select
+		id="selectAvgDateLogin"
+		parameterType="string"
+		resultType="hashMap">
+		select
+		round(count(*)/31,2) as avgDate,ri.requestCode
+		from statistc.requestinfo ri
+		where left(ri.createDate, 4) = #{yearMonth} and ri.requestCode ='L';
+	</select>
+
+	<!-- 부서별 월별 로그인 횟수 조회 -->
+	<select
+		id="selectDeptMonthLogin"
+		parameterType="string"
+		resultType="hashMap">
+		select count(distinct us.USERNAME) as totcnt ,ri.requestCode
+		from statistc.requestinfo ri
+		join statistc.user us
+		on left(ri.createDate, 4) = #{yearMonth} and us.HR_ORGAN= #{dept}
+		and ri.requestCode ='L';
+	</select>
+
+	<!-- 휴일제외한 월별 로그인 횟수 조회 -->
+	<select
+		id="selectNonPhLogin"
+		parameterType="string"
+		resultType="hashMap">
+		select count(*)  as totCnt,ri.requestCode
+		from statistc.requestinfo ri left join statistc.holiday ho
+		on left(ri.createDate,6)=ho.holidaydate
+		WHERE ho.holidaydate IS NULL AND left(ri.createDate,4)=#{yearMonth} 
+		and ri.requestCode ='L';
+
+	</select>
+	
+	
+	<select
+		id="selectWriteCnt"
+	     parameterType="string"
+		resultType="hashMap">
+		select ri.userID, count(*) as totCnt, ri.requestCode
+		from statistc.requestinfo ri 
+		where left(ri.createDate, 4) = #{yearMonth} and ri.userID=#{userId}
+		and ri.requestCode ='L';
+	
+	</select>
+	
+	<select
+		id="selectAllWriteCnt"
+	     parameterType="string"
+		resultType="hashMap">
+		select count(*) as post ,ri.userID, ri.requestCode
+		from statistc.requestinfo ri 
+		where left(ri.createDate, 4) =#{yearMonth} and ri.requestCode ='L'	 
+        group by ri.userID;
+	
+	</select>
+	
+
 </mapper>
