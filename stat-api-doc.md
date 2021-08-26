@@ -5,7 +5,7 @@
 | Version | Date of change | Reason for change | Change history |
 |---------|----------------|-------------------|----------------|
 | 1.0     | 2021-08-11     | First create      | First create   |
-| -        |                |                   |                |
+| 1.1        | 2021-08-26               | 접속자수에 관한 API로 맞게 수정, 구현부분 추가                  | 각 기준별 접속자수 추가               |
 | -        |                |                   |                |
 
 ## API (Application programming interface)
@@ -31,3 +31,29 @@ MyMovie로 등록된 영화의 정보를 조회한다.
 | transactionDate | string  | 개봉 일시(ISO 8601)            | o          |      |
 | amount          | decimal | 관객 수            | x          |      |
 | productName | string | 영화 제목 | o | |
+
+---
+
+## 연도별 접속자 수
+
+### 요청 URI
+
+> api/logs/year/{year}
+
+### Request Parameters
+
+| Name            | Type    | Description | Mandatory | Note |
+|-----------------|---------|-------------|-----------|------|
+| RequestName      | string  | logs            | o      |    |
+| year   | string  | YY            | o          |      |
+
+#### 예시
+
+```javascript
+{
+    "totCnt": 25,
+    "yearMonth": "200703",
+    "requestCode": "L",
+    "is_success": true
+}
+```
